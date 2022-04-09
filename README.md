@@ -13,10 +13,12 @@ O projeto consiste no desenvolvimento de um sistema digital para uma companhia d
 
 # Instruções
 1. Clone o repositório para sua máquina local e entre no repositório.
-> git clone git@github.com:gsvboas/taxon && cd taxon
+    
+    > git clone git@github.com:gsvboas/taxon && cd taxon
+
 2. Crie uma package do sistema. É de extrema importância que isto seja feito *ANTES* de levantar o container, pois o container criará um volume associado à essa package.
-> mvn package
+    > mvn package
 3. Suba os containers web e pg.
-> docker-compose up
+    > docker-compose up
 4. Desenvolva! Para atualizar as mudanças realizadas no servidor, você precisa simplesmente atualizar a package do sistema (não é necessário a utilização de comandos de deploy).
-> mvn package
+    > mvn package
