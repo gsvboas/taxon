@@ -12,5 +12,7 @@ O projeto consiste no desenvolvimento de um sistema digital para uma companhia d
 - Java 11+
 
 # Instruções
-1. Clone o repositório: > abc
-2. 
+1. Clone o repositório:
+
+
+> abc
