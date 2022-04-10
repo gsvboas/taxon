@@ -13,8 +13,13 @@ O projeto consiste no desenvolvimento de um sistema digital para uma companhia d
 
 # Instruções
 1. Clone o repositório para sua máquina local e entre no repositório.
+    (com ssh)
     
     > git clone git@github.com:gsvboas/taxon && cd taxon
+    
+    ou (sem ssh)
+    
+    > git clone https://github,com/gsvboas/taxon && cd taxon
 
 2. Crie uma package do sistema. É de extrema importância que isto seja feito *ANTES* de levantar o container, pois o container criará um volume associado à essa package.
     > mvn package
