@@ -34,6 +34,6 @@ Para atualizar as mudanças realizadas no servidor, você precisa simplesmente a
 
 Para acessar o artefato no servidor, basta abrir a seguinte url no seu navegador de preferência:
 
-    localhost:8082/taxon
+    localhost:8081/taxon
 
 Caso seja necessário alterar a porta do servidor (i.e. se você já estiver com a porta 8082 ocupada), basta alterar a porta no docker-compose.yml
