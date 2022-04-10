@@ -13,6 +13,7 @@ O projeto consiste no desenvolvimento de um sistema digital para uma companhia d
 
 # Instruções
 1. Clone o repositório para sua máquina local e entre no repositório.
+
     (com ssh)
     
     > git clone git@github.com:gsvboas/taxon && cd taxon
