@@ -1,8 +1,10 @@
 package br.ufscar.dc.pibd.dao;
 
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.net.InetAddress;
 
 abstract public class GenericDAO {
 
@@ -16,7 +18,12 @@ abstract public class GenericDAO {
 
     protected Connection getConnection() throws SQLException {
         /* Conexão banco de dados postgresql */
-
-        return DriverManager.getConnection("jdbc:postgresql://192.168.15.23:5432/postgres", "admin", "abcdefgh");
+        String ip;
+        try {
+            ip = InetAddress.getByName("taxon-pg").getHostAddress();
+        }catch(UnknownHostException e){
+            throw new RuntimeException(e);
+        }
+        return DriverManager.getConnection("jdbc:postgresql://" + ip + "/postgres", "admin", "abcdefgh");
     }
 }
