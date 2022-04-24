@@ -44,4 +44,4 @@ São instanciados dois containers Docker:
 1. taxon-taxon-pg-1
 2. taxon-taxon-web-1
 
-Como o acesso ao banco de dados pelo container 'taxon-taxon-web-1' requer a utilização do serviço em outro container, não conseguimos acessar o banco de dados utilizando o localhost, pois cada container tem um IP próprio. Ao invés disso, então, devemos utilizar o [Docker Networking](https://docs.docker.com/compose/networking/). É por isso que em nosso GenericDAO pegamos o IP dinamicamente, a partir do nome do serviço de banco de dados instanciado.
+Como o acesso ao banco de dados pelo container 'taxon-taxon-web-1' requer a utilização do serviço em outro container, não conseguimos acessar o banco de dados utilizando o localhost, pois cada container tem um IP próprio. Ao invés disso, então, devemos utilizar o [Docker Networking](https://docs.docker.com/compose/networking/). É por isso que em nosso [GenericDAO](https://github.com/gsvboas/taxon/blob/main/src/main/java/br/ufscar/dc/pibd/dao/GenericDAO.java) pegamos o IP dinamicamente, a partir do nome do serviço de banco de dados instanciado.
