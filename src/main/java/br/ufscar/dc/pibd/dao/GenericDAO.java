@@ -17,6 +17,6 @@ abstract public class GenericDAO {
     protected Connection getConnection() throws SQLException {
         /* Conexão banco de dados postgresql */
 
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/taxon", "postgres", "password");
+        return DriverManager.getConnection("jdbc:postgresql://192.168.15.23:5432/postgres", "admin", "abcdefgh");
     }
 }

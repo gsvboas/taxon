@@ -3,7 +3,7 @@ services:
   taxon-pg:
     image: postgres:latest
     ports:
-      - 8082:5432
+      - 5432:5432
     environment:
       POSTGRES_USER: "admin"
       POSTGRES_PASSWORD: "abcdefgh"

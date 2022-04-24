@@ -2,7 +2,13 @@
 
 CREATE VIEW Pessoa_login AS SELECT email, senha FROM Pessoa;
 
-REATE FUNCTION check_password(uname TEXT, pass TEXT)
+CREATE OR REPLACE FUNCTION foo(a TEXT, b TEXT) 
+RETURNS BOOLEAN 
+LANGUAGE sql AS
+'SELECT (senha = $2) FROM Pessoa_login WHERE email = $1;
+RETURN FOUND;';
+
+CREATE FUNCTION check_password(uname TEXT, pass TEXT)
 RETURNS BOOLEAN AS'
 DECLARE passed BOOLEAN;
 BEGIN
