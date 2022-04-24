@@ -20,7 +20,8 @@ abstract public class GenericDAO {
         /* Conexão banco de dados postgresql */
         String ip;
         try {
-            ip = InetAddress.getByName("taxon-pg").getHostAddress();
+            String dockerDatabaseServiceName = "taxon-pg";
+            ip = InetAddress.getByName(dockerDatabaseServiceName).getHostAddress();
         }catch(UnknownHostException e){
             throw new RuntimeException(e);
         }
