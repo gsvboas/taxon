@@ -39,7 +39,7 @@
                     <a href="">Motoristas</a>
                     <a href="">Conveniadas</a>
                     <a href="">Agendamentos</a>
-                    <a href="">Corridas</a>
+                    <a href="admin/corridas">Corridas</a>
 				</c:if>
 				</div>
 				<br>

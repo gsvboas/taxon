@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class CorridaDAO extends GenericDAO {
-
     public List<Corrida> getAllCorridasByMotoristaMesEAno(String cpfMotorista, Integer ano, Integer mes) {
         List<Corrida> corridas = new ArrayList<>();
         String sql = "SELECT * FROM recupera_corridas(?, ?, ?)";

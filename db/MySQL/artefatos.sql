@@ -1,5 +1,17 @@
-/* Começo Artefatos Áquila */
+/* Começo Artefatos Gabriele */
+CREATE OR REPLACE VIEW admin_resumo_de_corridas_view AS
+    SELECT
+        id AS id,
+        cpf AS motorista_cpf,
+        chassi AS veiculo_chassi,
+        valor AS valor_total,
+        inicia_as AS data_inicio
+    FROM
+        corrida;
 
+/* Fim Artefatos Gabriele */
+
+/* Começo Artefatos Áquila */
 CREATE VIEW Pessoa_login AS SELECT email, senha FROM Pessoa;
 
 CREATE OR REPLACE FUNCTION foo(a TEXT, b TEXT) 
