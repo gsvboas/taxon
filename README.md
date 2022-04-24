@@ -32,8 +32,16 @@ Para atualizar as mudanças realizadas no servidor, você precisa simplesmente a
 
     mvn package
 
-Para acessar o artefato no servidor, basta abrir a seguinte url no seu navegador de preferência:
+Para acessar o sistema no servidor, basta abrir a seguinte url no seu navegador de preferência:
 
     localhost:8081/taxon
 
-Caso seja necessário alterar a porta do servidor (i.e. se você já estiver com a porta 8082 ocupada), basta alterar a porta no docker-compose.yml
+Caso seja necessário alterar a porta do servidor (i.e. se você já estiver com a porta 8082 ocupada), basta alterar a porta no docker-compose.yml.
+
+# Arquitetura
+São instanciados dois containers Docker:
+
+1. taxon-taxon-pg-1
+2. taxon-taxon-web-1
+
+Como o acesso ao banco de dados pelo container 'taxon-taxon-web-1' requer a utilização do serviço em outro container, não conseguimos acessar o banco de dados utilizando o localhost, pois cada container tem um IP próprio. Ao invés disso, então, devemos utilizar o [Docker Networking](https://docs.docker.com/compose/networking/). É por isso que em nosso GenericDAO pegamos o IP dinamicamente, a partir do nome do serviço de banco de dados instanciado.
