@@ -57,24 +57,33 @@ public class MotoristaController extends HttpServlet {
 
     }
 
-    private void apresentaCorridasFeitas(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void apresentaCorridasFeitas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         User userLogged = (User) request.getSession().getAttribute("usuarioLogado");
-        Motorista motoristaFisica = dao.getFisicaFromMotById(userLogged.getId()); // Recupera a pessoa fisica de
-                                                                                  // motorista
-        Integer year = (Integer) request.getAttribute("year");
-        Integer month = (Integer) request.getAttribute("mes");
+        Motorista motoristaFisica = dao.getFisicaFromMotById(userLogged.getId()); // Recupera a pessoa fisica de motorista
+        
+        String mesAno = request.getParameter("monthYear");
+        Integer year = null;
+        Integer month = null;
         List<Corrida> corridas = new ArrayList<>();
         Double totalRecebido = 0.0;
         Integer corridasTotais = 0;
 
-        if (year == null) {
+        if(mesAno!=null){
+            String []yearMonth = mesAno.split("-");
+            year = Integer.parseInt(yearMonth[0]);
+            month = Integer.parseInt(yearMonth[1]);
+        }
+
+        if(year == null){
             year = Calendar.getInstance().get(Calendar.YEAR);
+  
         }
-        if (month == null) {
-            month = Calendar.getInstance().get(Calendar.MONTH);
+        if(month == null){
+            month = Calendar.getInstance().get(Calendar.MONTH); 
+            month = month + 1;  
         }
+
         corridas = daoCorrida.getAllCorridasByMotoristaMesEAno(motoristaFisica.getCpf(), year, month);
         totalRecebido = dao.totalValorMotoristaMesEAno(motoristaFisica.getCpf(), year, month);
         corridasTotais = dao.totalCorridasMotoristaMesEAno(motoristaFisica.getCpf(), year, month);
