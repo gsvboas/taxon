@@ -59,6 +59,8 @@ VALUES
     ('09876543214321')
 ON CONFLICT DO NOTHING;
 
+
+
 INSERT INTO
     agendamento(cnpj, efetuado_as)
 VALUES
@@ -105,3 +107,67 @@ VALUES
         1
     )
 ON CONFLICT DO NOTHING;
+
+INSERT INTO
+    pessoa(id, email, senha, nome, papel)
+VALUES
+    (4, 'outraconveniada@gmail.com', 'outraconveniada', 'OutraConveniada', 'CONV')
+ON CONFLICT DO NOTHING;
+INSERT INTO
+    juridica(cnpj, setor, id)
+VALUES
+    ('99999999999999', 'transportes', 4)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO
+    conveniada(cnpj)
+VALUES
+    ('99999999999999')
+ON CONFLICT DO NOTHING;
+INSERT INTO
+    agendamento(cnpj, efetuado_as)
+VALUES
+    ('99999999999999', '2022-04-21 11:15:00')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO
+    fatura(cnpj, data_criacao, situacao)
+VALUES
+    ('99999999999999', '2022-04-01 00:00:00', 'em aberto')
+ON CONFLICT DO NOTHING;
+INSERT INTO
+    corrida(cpf,
+            chassi,
+            inicia_as,
+            valor,
+            agendamento_id,
+            fatura_id)
+VALUES
+    (
+        '33377799955',
+        '12345678901234567',
+        '2022-03-15 07:00:00',
+        54.32,
+        2,
+        2
+    )
+ON CONFLICT DO NOTHING;
+
+INSERT INTO
+    corrida(cpf,
+            chassi,
+            inicia_as,
+            valor,
+            agendamento_id,
+            fatura_id)
+VALUES
+    (
+        '33377799955',
+        '12345678901234567',
+        '2022-03-15 07:00:00',
+        54.32,
+        2,
+        1
+    )
+ON CONFLICT DO NOTHING;
+

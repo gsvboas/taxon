@@ -1,24 +1,50 @@
 /* Começo Artefatos Gabriele */
 CREATE OR REPLACE VIEW admin_resumo_de_corridas_view AS
     SELECT
-        id AS id,
-        cpf AS motorista_cpf,
-        chassi AS veiculo_chassi,
-        valor AS valor_total,
-        inicia_as AS data_inicio
+        c.id AS id,
+        p.nome AS conveniada_nome,
+        c.cpf AS motorista_cpf,
+        c.chassi AS veiculo_chassi,
+        c.valor AS valor_total,
+        c.inicia_as AS data_inicio,
+        c.termina_as AS data_fim
     FROM
-        corrida;
+        corrida AS c
+    JOIN
+        agendamento AS a ON c.agendamento_id = a.id
+    JOIN
+        juridica AS j ON a.cnpj = j.cnpj
+    JOIN
+        pessoa AS p ON j.id = p.id;
 
+CREATE OR REPLACE FUNCTION mesma_empresa(agendamento integer, fatura integer)
+    RETURNS boolean as $result$
+        DECLARE
+            agendamento_cnpj char(14);
+            fatura_cnpj char(14);
+            result boolean;
+        BEGIN
+            SELECT a.cnpj into agendamento_cnpj FROM agendamento AS a WHERE a.id = agendamento;
+            SELECT f.cnpj into fatura_cnpj FROM fatura AS f WHERE f.id = fatura;
+            RETURN agendamento_cnpj = fatura_cnpj;
+        END
+$result$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION f_ao_inserir_ou_atualizar_em_admin_resumo_de_corridas_view()
+    RETURNS trigger AS $trig$
+        BEGIN
+            RAISE 'Favor atualizar diretamente nas tabelas';
+        END
+    $trig$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trig_ao_inserir_ou_atualizar_em_admin_resumo_de_corridas_view
+    INSTEAD OF UPDATE ON admin_resumo_de_corridas_view
+    FOR EACH ROW
+    EXECUTE FUNCTION f_ao_inserir_ou_atualizar_em_admin_resumo_de_corridas_view();
 /* Fim Artefatos Gabriele */
 
 /* Começo Artefatos Áquila */
-CREATE VIEW Pessoa_login AS SELECT email, senha FROM Pessoa;
-
-CREATE OR REPLACE FUNCTION foo(a TEXT, b TEXT) 
-RETURNS BOOLEAN 
-LANGUAGE sql AS
-'SELECT (senha = $2) FROM Pessoa_login WHERE email = $1;
-RETURN FOUND;';
+CREATE OR REPLACE VIEW Pessoa_login AS SELECT email, senha FROM Pessoa;
 
 CREATE FUNCTION check_password(uname TEXT, pass TEXT)
 RETURNS BOOLEAN AS'
