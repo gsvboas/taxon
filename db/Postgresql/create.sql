@@ -1,4 +1,4 @@
-create table Local(
+CREATE TABLE Local(
     cep CHAR(8),
     num INT,
     PRIMARY key(cep,num)
@@ -44,11 +44,11 @@ CREATE TABLE Fisica(
 );
 CREATE TABLE Motorista (
   	cpf VARCHAR(11),
-    	renach VARCHAR(50),
-    	agencia_bancaria VARCHAR(10),
-    	conta_bancaria VARCHAR(10),
-    	banco VARCHAR(50),
-    	PRIMARY KEY (cpf),
+    renach VARCHAR(50),
+    agencia_bancaria VARCHAR(10),
+    conta_bancaria VARCHAR(10),
+    banco VARCHAR(50),
+    PRIMARY KEY (cpf),
 	FOREIGN KEY (cpf) REFERENCES Fisica(cpf)
 );
 CREATE TABLE MotoristaAcessaVeiculo(
@@ -97,14 +97,14 @@ CREATE TABLE PassageiroAutorizado(
 	FOREIGN KEY(cnpj, cpf) REFERENCES ConveniadaAutorizaPassageiro(cnpj, cpf)
 );
 CREATE TABLE Fatura(
-	id serial PRIMARY KEY,  -- surrogate PK
+	id SERIAL PRIMARY KEY,  -- surrogate PK
 	cnpj CHAR(14),
-    data_criacao Date, 
+    data_criacao DATE,
 	situacao VARCHAR(10) NOT NULL,
 	FOREIGN KEY (cnpj) REFERENCES Conveniada(cnpj),
 	CHECK(situacao IN ('em aberto', 'em atraso', 'quitada'))
 );
-create table Agendamento(
+CREATE TABLE Agendamento(
     id SERIAL PRIMARY KEY,
     cnpj VARCHAR(14),
     efetuado_as TIMESTAMP,
@@ -122,7 +122,7 @@ CREATE TABLE PassageiroAutorizadoViajaEmAgendamentoPorLocal(
 	FOREIGN KEY (agendamento_id) REFERENCES Agendamento(id),
 	FOREIGN KEY (cep, num) REFERENCES Local(cep, num)
 );
-create table AgendamentoParaEmLocal(
+CREATE TABLE AgendamentoParaEmLocal(
     agendamento_id INT,
     cep VARCHAR(8), 
     num INT,
@@ -172,38 +172,38 @@ CREATE TABLE TelefonePessoa(
 	PRIMARY KEY (id, telefone),
 	FOREIGN KEY (id) REFERENCES Pessoa(id)
 );
-create table MotoristaCNH(
-   	cpf varchar(15),
-    	num_registro int,
-    	categoria VARCHAR(2) NOT NULL,
-    	vencimento_em TIMESTAMP NOT NULL,
-    	emitida_em TIMESTAMP NOT NULL, 
-    	PRIMARY key (cpf, num_registro),
-    	FOREIGN key (cpf) REFERENCES Motorista,
+CREATE TABLE MotoristaCNH(
+   	cpf VARCHAR(15),
+    num_registro INT,
+    categoria VARCHAR(2) NOT NULL,
+    vencimento_em TIMESTAMP NOT NULL,
+    emitida_em TIMESTAMP NOT NULL,
+    PRIMARY key (cpf, num_registro),
+    FOREIGN key (cpf) REFERENCES Motorista,
 	CHECK(categoria IN ('A', 'B', 'C', 'D', 'E', 'AB', 'AC', 'AD', 'AE'))
 );
 CREATE Table PeriodoProprietarioPossuiVeiculo(
-	id INT,
-  	chassi VARCHAR(17),
-  	inicio TIMESTAMP,
-  	fim TIMESTAMP,
-	PRIMARY KEY(id, chassi, inicio),
-  	FOREIGN KEY (id, chassi) REFERENCES ProprietarioPossuiVeiculo(id, chassi)
+    id INT,
+    chassi VARCHAR(17),
+    inicio TIMESTAMP,
+    fim TIMESTAMP,
+    PRIMARY KEY(id, chassi, inicio),
+    FOREIGN KEY (id, chassi) REFERENCES ProprietarioPossuiVeiculo(id, chassi)
 );
 
 CREATE TABLE Corrida(
-                        id SERIAL PRIMARY KEY,
-                        cpf CHAR(11),
-                        chassi CHAR(17),
-                        inicia_as TIMESTAMP,
-                        termina_as TIMESTAMP,
-                        valor REAL,
-                        inicia_em VARCHAR(50),
-                        termina_em VARCHAR(50),
-                        agendamento_id INT NOT NULL,
-                        fatura_id INT NOT NULL CHECK(mesma_empresa(agendamento_id, fatura_id)),
-                        UNIQUE(cpf, chassi, inicia_as),
-                        FOREIGN KEY(cpf, chassi) REFERENCES MotoristaHabilitado(cpf, chassi),
-                        FOREIGN KEY(agendamento_id) REFERENCES Agendamento(id),
-                        FOREIGN KEY(fatura_id) REFERENCES Fatura(id)
+    id SERIAL PRIMARY KEY,
+    cpf CHAR(11),
+    chassi CHAR(17),
+    inicia_as TIMESTAMP,
+    termina_as TIMESTAMP,
+    valor REAL,
+    inicia_em VARCHAR(50),
+    termina_em VARCHAR(50),
+    agendamento_id INT NOT NULL,
+    fatura_id INT NOT NULL CHECK(mesma_empresa(agendamento_id, fatura_id)),
+    UNIQUE(cpf, chassi, inicia_as),
+    FOREIGN KEY(cpf, chassi) REFERENCES MotoristaHabilitado(cpf, chassi),
+    FOREIGN KEY(agendamento_id) REFERENCES Agendamento(id),
+    FOREIGN KEY(fatura_id) REFERENCES Fatura(id)
 );
