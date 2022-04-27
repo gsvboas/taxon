@@ -14,6 +14,18 @@
 
 	
 		<body>
+			<%
+				String contextPath = request.getContextPath().replace("/", "");
+			%>
+            <p align="center" >Total recebido: ${requestScope.totalRecebido}</p>
+            <p align="center" >Corridas Totais: ${requestScope.corridasTotais}</p>
+
+            <form align="center" action="/<%=contextPath%>/motoristas/corridas">
+				<label for="start"> <strong>Escolha o mês que deseja ver as suas Corridas!</strong></label>
+				<input type="month" min="2018-03" value="2022-03" name="monthYear">
+				<input type="submit" class="submit"/>
+			</form>
+			
             <p align="center" >Total recebido: ${requestScope.totalRecebido}</p>
             <p align="center" >Corridas Totais: ${requestScope.corridasTotais}</p>
             

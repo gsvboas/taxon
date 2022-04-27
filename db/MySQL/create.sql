@@ -206,3 +206,4 @@ CREATE Table PeriodoProprietarioPossuiVeiculo(
 	PRIMARY KEY(id, chassi, inicio),
   	FOREIGN KEY (id, chassi) REFERENCES ProprietarioPossuiVeiculo(id, chassi)
 );
+

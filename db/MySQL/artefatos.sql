@@ -152,6 +152,7 @@ CREATE TRIGGER trig_ao_inserir_ou_atualizar_em_admin_resumo_de_corridas_view
 /* Fim Artefatos Gabriele */
 
 /* Começo Artefatos Áquila */
+
 CREATE OR REPLACE VIEW Pessoa_login AS SELECT email, senha FROM Pessoa;
 
 CREATE FUNCTION check_password(uname TEXT, pass TEXT)
