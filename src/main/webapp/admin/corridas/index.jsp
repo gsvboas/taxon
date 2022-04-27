@@ -16,16 +16,39 @@
 </head>
 <body>
     <table>
+        <c:if test="${param.conv != null}">
+            <tr>
+                <td colspan="7">
+                    <a href="" align="center">Ver todas</a>
+                </td>
+            </tr>
+        </c:if>
+        <tr>
+
+            <td colspan="7">
+                <form method="GET">
+                    <input name="conv" id="conv" type="text" placeholder="Pesquisar por conveniada" style="width:100%"/>
+                </form>
+            </td>
+        </tr>
         <c:forEach var="corrida" items="${requestScope.corridas}">
             <tr>
                 <td><c:out value="${corrida.id.toString()}"/></td>
+                <td><c:out value="${corrida.nomeConveniada}"/></td>
                 <td><c:out value="${corrida.cpfMotorista}"/></td>
                 <td><c:out value="${corrida.chassiVeiculo}"/></td>
                 <td><c:out value="${corrida.valorTotal.toString()}"/></td>
                 <td><c:out value="${corrida.dataInicio.toString()}"/></td>
-                <td><a href='corridas?id=<c:out value="${corrida.id.toString()}"/>'>Detalhes</a></td>
+                <td><a href='?id=<c:out value="${corrida.id.toString()}"/>'>Detalhes</a></td>
             </tr>
         </c:forEach>
+        <tr>
+            <td>
+                <form method="GET">
+                    <a href="corridas/criar">Nova Corrida</a>
+                </form>
+            </td>
+        </tr>
     </table>
 </body>
 </html>

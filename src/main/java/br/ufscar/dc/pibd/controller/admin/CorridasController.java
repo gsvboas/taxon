@@ -18,23 +18,27 @@ public class CorridasController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String corridaID = req.getParameter("id");
+        String conveniada = req.getParameter("conv");
 
         if (corridaID == null || corridaID.isEmpty())
-            this.doGetListagem(req, resp);
+            this.doGetListagem(conveniada, req, resp);
         else
             this.doGetDetalhamento(corridaID, req, resp);
 
     }
 
-    private void doGetListagem(HttpServletRequest req, HttpServletResponse resp)
+    private void doGetListagem(String conveniada, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException{
         ResumoCorridaDAO resumoCorridaDAO = new ResumoCorridaDAO();
-        List<ResumoCorrida> listagemCorridas = resumoCorridaDAO.getAllResumosDeCorrida();
+        List<ResumoCorrida> listagemCorridas =
+                conveniada == null || conveniada.isEmpty() ?
+                        resumoCorridaDAO.getAllResumosDeCorrida() :
+                        resumoCorridaDAO.getAllResumosDeCorridaPorConveniada(conveniada);
 
         req.setAttribute("corridas", listagemCorridas);
         //throw new RuntimeException(listagemCorridas.toString());
 
-        RequestDispatcher rd = req.getRequestDispatcher("corridas.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("corridas/index.jsp");
         rd.include(req, resp);
     }
 

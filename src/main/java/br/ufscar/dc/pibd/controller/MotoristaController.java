@@ -61,8 +61,10 @@ public class MotoristaController extends HttpServlet {
             throws ServletException, IOException {
 
         User userLogged = (User) request.getSession().getAttribute("usuarioLogado");
+        if (userLogged == null) response.getWriter().println("null");
+        if (userLogged != null) response.getWriter().println("not null");
+        /*
         Motorista motoristaFisica = dao.getFisicaFromMotById(userLogged.getId()); // Recupera a pessoa fisica de
-                                                                                  // motorista
         Integer year = (Integer) request.getAttribute("year");
         Integer month = (Integer) request.getAttribute("mes");
         List<Corrida> corridas = new ArrayList<>();
@@ -85,5 +87,8 @@ public class MotoristaController extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/motorista/corridasFeitas.jsp");
 
         dispatcher.forward(request, response);
+
+         */
+
     }
 }
