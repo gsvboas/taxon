@@ -101,7 +101,7 @@ CREATE OR REPLACE FUNCTION f_d_veiculo()
     END
     $func$ LANGUAGE plpgsql;
     
- CREATE OR REPLACE TRIGGER t_d_veiculo INSTEAD OF DELETE ON veiculo_view
+ CREATE TRIGGER t_d_veiculo INSTEAD OF DELETE ON veiculo_view
  	FOR EACH ROW EXECUTE PROCEDURE f_d_veiculo();
         
 /* Fim Artefatos Samuel */
