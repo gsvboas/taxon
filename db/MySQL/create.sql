@@ -101,7 +101,6 @@ CREATE TABLE Fatura(
 	cnpj CHAR(14),
     data_criacao Date, 
 	situacao VARCHAR(10) NOT NULL,
-	UNIQUE(data_criacao),
 	FOREIGN KEY (cnpj) REFERENCES Conveniada(cnpj),
 	CHECK(situacao IN ('em aberto', 'em atraso', 'quitada'))
 );
@@ -143,7 +142,7 @@ CREATE TABLE Corrida(
 	inicia_em VARCHAR(50),
 	termina_em VARCHAR(50),
 	agendamento_id INT NOT NULL,
-	fatura_id INT NOT NULL,
+	fatura_id INT NOT NULL CHECK(mesma_empresa(agendamento_id, fatura_id)),
 	UNIQUE(cpf, chassi, inicia_as),
 	FOREIGN KEY(cpf, chassi) REFERENCES MotoristaHabilitado(cpf, chassi),
 	FOREIGN KEY(agendamento_id) REFERENCES Agendamento(id),

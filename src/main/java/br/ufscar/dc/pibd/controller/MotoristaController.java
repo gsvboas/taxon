@@ -60,11 +60,16 @@ public class MotoristaController extends HttpServlet {
     private void apresentaCorridasFeitas(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         User userLogged = (User) request.getSession().getAttribute("usuarioLogado");
+
         Motorista motoristaFisica = dao.getFisicaFromMotById(userLogged.getId()); // Recupera a pessoa fisica de motorista
         
         String mesAno = request.getParameter("monthYear");
         Integer year = null;
         Integer month = null;
+
+        //if (userLogged == null) response.getWriter().println("null");
+        //if (userLogged != null) response.getWriter().println("not null");
+
         List<Corrida> corridas = new ArrayList<>();
         Double totalRecebido = 0.0;
         Integer corridasTotais = 0;
@@ -94,5 +99,8 @@ public class MotoristaController extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/motorista/corridasFeitas.jsp");
 
         dispatcher.forward(request, response);
+
+         
+
     }
 }
