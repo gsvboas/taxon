@@ -167,7 +167,7 @@ VALUES
         '2022-03-15 07:00:00',
         54.32,
         2,
-        1
+        2
     )
 ON CONFLICT DO NOTHING;
 
