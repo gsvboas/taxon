@@ -201,7 +201,7 @@ CREATE TABLE Corrida(
     inicia_em VARCHAR(50),
     termina_em VARCHAR(50),
     agendamento_id INT NOT NULL,
-    fatura_id INT NOT NULL CHECK(mesma_empresa(agendamento_id, fatura_id)),
+    fatura_id INT NOT NULL,
     UNIQUE(cpf, chassi, inicia_as),
     FOREIGN KEY(cpf, chassi) REFERENCES MotoristaHabilitado(cpf, chassi),
     FOREIGN KEY(agendamento_id) REFERENCES Agendamento(id),
