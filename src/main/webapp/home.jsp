@@ -38,7 +38,7 @@
 					<p>Seja bem-vindo(a) ${sessionScope.usuarioLogado.nome}!</p>
                     <a href="">Motoristas</a>
                     <a href="">Conveniadas</a>
-                    <a href="">Agendamentos</a>
+                    <a href="admin/agendamentos">Agendamentos</a>
                     <a href="admin/corridas">Corridas</a>
 				</c:if>
 				</div>
