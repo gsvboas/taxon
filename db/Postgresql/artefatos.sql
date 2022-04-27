@@ -68,7 +68,7 @@ CREATE OR REPLACE FUNCTION f_i_veiculo()
     END
     $func$ LANGUAGE plpgsql;
     
- CREATE OR REPLACE TRIGGER t_i_veiculo INSTEAD OF INSERT ON veiculo_view
+ CREATE TRIGGER t_i_veiculo INSTEAD OF INSERT ON veiculo_view
  	FOR EACH ROW EXECUTE PROCEDURE f_i_veiculo();
     
 CREATE OR REPLACE FUNCTION f_u_veiculo()
@@ -86,7 +86,7 @@ CREATE OR REPLACE FUNCTION f_u_veiculo()
     END
     $func$ LANGUAGE plpgsql;
     
- CREATE OR REPLACE TRIGGER t_u_veiculo INSTEAD OF UPDATE ON veiculo_view
+ CREATE TRIGGER t_u_veiculo INSTEAD OF UPDATE ON veiculo_view
  	FOR EACH ROW EXECUTE PROCEDURE f_u_veiculo();
     
     
