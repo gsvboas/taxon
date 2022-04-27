@@ -1,6 +1,7 @@
 version: '3'
 services:
   taxon-pg:
+    container_name: taxon-pg
     image: postgres:14.2
     ports:
       - 5432:5432
@@ -8,6 +9,7 @@ services:
       POSTGRES_USER: "admin"
       POSTGRES_PASSWORD: "abcdefgh"
   taxon-web:
+    container_name: taxon-web
     depends_on:
       - taxon-pg
     image: tomcat:9.0.38
