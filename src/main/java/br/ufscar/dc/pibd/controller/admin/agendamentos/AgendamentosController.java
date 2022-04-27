@@ -1,4 +1,4 @@
-package br.ufscar.dc.pibd.controller.admin;
+package br.ufscar.dc.pibd.controller.admin.agendamentos;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,12 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/admin/corridas/criar"})
-public class CriarCorridaController extends HttpServlet {
+@WebServlet(urlPatterns = {"/admin/agendamentos"})
+public class AgendamentosController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-        RequestDispatcher rq = req.getRequestDispatcher("criar.jsp");
-        rq.include(req, resp);
+        RequestDispatcher rd = req.getRequestDispatcher("agendamentos/index.jsp");
+        rd.include(req, resp);
     }
 }
