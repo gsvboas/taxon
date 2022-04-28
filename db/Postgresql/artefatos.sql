@@ -1,16 +1,4 @@
 /* Começo Artefatos Gabriele */
-    CREATE OR REPLACE VIEW admin_resumo_de_conveniadas_view AS
-SELECT
-    p.nome as nome,
-    m.cpf as cpf,
-    AGE(CURRENT_TIMESTAMP, f.data_nasc) as idade,
-    cnh.setor as setor
-FROM
-    motorista AS m
-        JOIN
-    fisica AS f ON f.cpf = m.cpf
-        JOIN
-    pessoa AS p ON p.id = f.id;
 CREATE OR REPLACE VIEW admin_resumo_de_conveniadas_view AS
     SELECT
         c.cnpj as cnpj,
