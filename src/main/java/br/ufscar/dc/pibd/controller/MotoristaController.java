@@ -1,9 +1,11 @@
 package br.ufscar.dc.pibd.controller;
 
 import br.ufscar.dc.pibd.dao.MotoristaDAO;
+import br.ufscar.dc.pibd.dao.VeiculoDAO;
 import br.ufscar.dc.pibd.dao.CorridaDAO;
 import br.ufscar.dc.pibd.domain.Motorista;
 import br.ufscar.dc.pibd.domain.User;
+import br.ufscar.dc.pibd.domain.Veiculo;
 import br.ufscar.dc.pibd.domain.Corrida;
 import java.io.IOException;
 import java.util.List;
@@ -24,10 +26,13 @@ public class MotoristaController extends HttpServlet {
 
     private CorridaDAO daoCorrida;
 
+    private VeiculoDAO daoVeiculo;
+
     @Override
     public void init() {
         dao = new MotoristaDAO();
         daoCorrida = new CorridaDAO();
+        daoVeiculo = new VeiculoDAO();
     }
 
     @Override
@@ -48,6 +53,14 @@ public class MotoristaController extends HttpServlet {
             switch (action) {
                 case "/corridas":
                     apresentaCorridasFeitas(request, response);
+                    break;
+                case "/corridasPendentes":
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/motorista/corridasPendentes.jsp");
+
+                    dispatcher.forward(request, response);
+                    break;
+                case "/carros":
+                    apresentaCarros(request, response);
                     break;
             }
         } catch (RuntimeException | IOException | ServletException e) {
@@ -99,8 +112,19 @@ public class MotoristaController extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/motorista/corridasFeitas.jsp");
 
         dispatcher.forward(request, response);
+    }
 
-         
+    private void apresentaCarros(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User userLogged = (User) request.getSession().getAttribute("usuarioLogado");
 
+        Motorista motoristaFisica = dao.getFisicaFromMotById(userLogged.getId());
+
+        List<Veiculo> veiculos = daoVeiculo.getAllVeiculosByMotorista(motoristaFisica.getCpf());
+
+        request.setAttribute("veiculos", veiculos);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/motorista/meusCarros.jsp");
+
+        dispatcher.forward(request, response);
     }
 }

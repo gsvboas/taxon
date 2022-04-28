@@ -22,8 +22,8 @@
 				<c:if test="${sessionScope.usuarioLogado.papel == 'MOT' }">
 					<p>Seja bem-vindo(a) ${sessionScope.usuarioLogado.nome}!</p>
                     <a href="motoristas/corridas">Corridas Feitas</a>
-                    <a href="">Corridas Pendentes</a>
-                    <a href="">Carros</a>
+                    <a href="motoristas/corridasPendentes">Corridas Pendentes</a>
+                    <a href="motoristas/carros">Meus carros</a>
 				</c:if>
 
                 <c:if test="${sessionScope.usuarioLogado.papel == 'CONV' }">
