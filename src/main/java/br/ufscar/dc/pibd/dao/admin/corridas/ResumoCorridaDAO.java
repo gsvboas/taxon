@@ -1,7 +1,7 @@
 package br.ufscar.dc.pibd.dao.admin;
 
 import br.ufscar.dc.pibd.dao.GenericDAO;
-import br.ufscar.dc.pibd.domain.admin.ResumoCorrida;
+import br.ufscar.dc.pibd.domain.admin.corridas.ResumoCorrida;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
