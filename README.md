@@ -48,3 +48,9 @@ São instanciados dois containers Docker:
 Como o acesso ao banco de dados pelo container 'taxon-web' requer a utilização do serviço em outro container, não conseguimos acessar o banco de dados utilizando o localhost, pois cada container tem um IP próprio. Ao invés disso, então, devemos utilizar o [Docker Networking](https://docs.docker.com/compose/networking/). É por isso que em nosso [GenericDAO](https://github.com/gsvboas/taxon/blob/main/src/main/java/br/ufscar/dc/pibd/dao/GenericDAO.java) pegamos o IP dinamicamente, a partir do nome do serviço de banco de dados instanciado.
 
 Entre o host e os containers, no entanto, a comunicação é mais simples. Uma vez com os serviços rodando, podemos ainda conectar com cada serviço em sua devida porta, utilizando o localhost. Assim, pode-se testar o banco de dados criando uma conexão com localhost:5432 e utilizando os scripts .sql providenciados no repositório.
+
+## db/PostgreSQL
+É o diretório onde encontram-se os scripts .sql de criação do schema, criação dos artefatos e simulação de um estado de banco de dados.
+
+## src
+É onde encontram-se os códigos fonte da camada de servidor.
