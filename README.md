@@ -39,9 +39,12 @@ Para acessar o sistema no servidor, basta abrir a seguinte url no seu navegador 
 Caso seja necessário alterar a porta do servidor (i.e. se você já estiver com a porta 8082 ocupada), basta alterar a porta no docker-compose.yml.
 
 # Arquitetura
+## Dockerização
 São instanciados dois containers Docker:
 
-1. taxon-taxon-pg-1
-2. taxon-taxon-web-1
+1. taxon-pg
+2. taxon-web
 
-Como o acesso ao banco de dados pelo container 'taxon-taxon-web-1' requer a utilização do serviço em outro container, não conseguimos acessar o banco de dados utilizando o localhost, pois cada container tem um IP próprio. Ao invés disso, então, devemos utilizar o [Docker Networking](https://docs.docker.com/compose/networking/). É por isso que em nosso [GenericDAO](https://github.com/gsvboas/taxon/blob/main/src/main/java/br/ufscar/dc/pibd/dao/GenericDAO.java) pegamos o IP dinamicamente, a partir do nome do serviço de banco de dados instanciado.
+Como o acesso ao banco de dados pelo container 'taxon-web' requer a utilização do serviço em outro container, não conseguimos acessar o banco de dados utilizando o localhost, pois cada container tem um IP próprio. Ao invés disso, então, devemos utilizar o [Docker Networking](https://docs.docker.com/compose/networking/). É por isso que em nosso [GenericDAO](https://github.com/gsvboas/taxon/blob/main/src/main/java/br/ufscar/dc/pibd/dao/GenericDAO.java) pegamos o IP dinamicamente, a partir do nome do serviço de banco de dados instanciado.
+
+Entre o host e os containers, no entanto, a comunicação é mais simples. Uma vez com os serviços rodando, podemos ainda conectar com cada serviço em sua devida porta, utilizando o localhost. Assim, pode-se testar o banco de dados criando uma conexão com localhost:5432 e utilizando os scripts .sql providenciados no repositório.
