@@ -106,8 +106,8 @@ CREATE TABLE Fatura(
 );
 CREATE TABLE Agendamento(
     id SERIAL PRIMARY KEY,
-    cnpj VARCHAR(14),
-    efetuado_as TIMESTAMP,
+    cnpj VARCHAR(14) NOT NULL,
+    efetuado_as TIMESTAMP NOT NULL,
     UNIQUE(cnpj, efetuado_as),
     FOREIGN KEY(cnpj) REFERENCES Conveniada(cnpj) 
 );
