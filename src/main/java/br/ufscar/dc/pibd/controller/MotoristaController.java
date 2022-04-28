@@ -55,12 +55,19 @@ public class MotoristaController extends HttpServlet {
                     apresentaCorridasFeitas(request, response);
                     break;
                 case "/corridasPendentes":
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("/motorista/corridasPendentes.jsp");
-
-                    dispatcher.forward(request, response);
+                    apresentaCorridasPendentes(request, response);
                     break;
                 case "/carros":
                     apresentaCarros(request, response);
+                    break;
+                case "/carro":
+                    apresentaCarro(request, response);
+                    break;
+                case "/adicionaCarro":
+                    adicionaCarro(request, response);
+                    break;
+                case "/deletaCarro":
+                    deletaCarro(request, response);
                     break;
             }
         } catch (RuntimeException | IOException | ServletException e) {
@@ -114,6 +121,36 @@ public class MotoristaController extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+    private void apresentaCorridasPendentes(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User userLogged = (User) request.getSession().getAttribute("usuarioLogado");
+
+        Motorista motoristaFisica = dao.getFisicaFromMotById(userLogged.getId());
+
+        String mesAno = request.getParameter("monthYear");
+        Integer year = null;
+        Integer month = null;
+
+        if(mesAno!=null && !mesAno.isEmpty()) {
+            String []yearMonth = mesAno.split("-");
+            year = this.parseInt(yearMonth[0]);
+            month = this.parseInt(yearMonth[1]);
+        } else {
+          year = Calendar.getInstance().get(Calendar.YEAR);
+          month = Calendar.getInstance().get(Calendar.MONTH) + 1; 
+        }
+
+        List<Corrida> corridasPendentes = daoCorrida.getAllCorridasPendentesByMotoristaMesEAno(motoristaFisica.getCpf(), year, month);
+
+        request.setAttribute("corridasPendentes", corridasPendentes);
+        request.setAttribute("totalCorridasPendentes", corridasPendentes.size());
+        request.setAttribute("year", year);
+        request.setAttribute("month", String.format("%02d", month));
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/motorista/corridasPendentes.jsp");
+
+        dispatcher.forward(request, response);
+    }
+
     private void apresentaCarros(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User userLogged = (User) request.getSession().getAttribute("usuarioLogado");
 
@@ -126,5 +163,64 @@ public class MotoristaController extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/motorista/meusCarros.jsp");
 
         dispatcher.forward(request, response);
+    }
+
+    private void apresentaCarro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User userLogged = (User) request.getSession().getAttribute("usuarioLogado");
+
+        Motorista motoristaFisica = dao.getFisicaFromMotById(userLogged.getId());
+
+        String chassi = request.getParameter("chassi");
+
+        Veiculo veiculo = null;
+
+        if (chassi != null && !chassi.isEmpty())
+          veiculo = daoVeiculo.getVeiculoByMotoristaChassi(motoristaFisica.getCpf(), chassi);
+
+        request.setAttribute("veiculo", veiculo);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/motorista/detalhamentoCarro.jsp");
+
+        dispatcher.forward(request, response);
+    }
+
+    private void adicionaCarro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User userLogged = (User) request.getSession().getAttribute("usuarioLogado");
+
+        Motorista motoristaFisica = dao.getFisicaFromMotById(userLogged.getId());
+
+        String chassi = request.getParameter("chassi");
+        String placa = request.getParameter("placa");
+        String marca = request.getParameter("marca");
+        String modelo = request.getParameter("modelo");
+        Integer ano = this.parseInt(request.getParameter("ano"));
+        String cor = request.getParameter("cor");
+        Integer maxOcupacao = this.parseInt(request.getParameter("maxOcupacao"));
+        String garagemCep = request.getParameter("garagemCep");
+        Integer garagemNum = this.parseInt(request.getParameter("garagemNum"));
+        Integer garagemNumVaga = this.parseInt(request.getParameter("garagemNumVaga"));
+
+        Veiculo veiculo = new Veiculo(chassi, cor, placa, ano, modelo, marca, maxOcupacao, garagemCep, garagemNum, garagemNumVaga, motoristaFisica.getCpf());
+
+        daoVeiculo.add(veiculo);
+
+        response.sendRedirect(request.getContextPath() + "/motoristas/carros");
+    }
+
+    private void deletaCarro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String chassi = request.getParameter("chassi");
+
+        if (chassi != null && !chassi.isEmpty())
+          daoVeiculo.delete(chassi);
+
+        response.sendRedirect(request.getContextPath() + "/motoristas/carros");
+    }
+
+    private Integer parseInt(String str) {
+      try {
+        return Integer.parseInt(str);
+      } catch (NumberFormatException e) {
+        return 0;
+      }
     }
 }
