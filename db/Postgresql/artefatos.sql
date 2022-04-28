@@ -73,6 +73,7 @@ CREATE OR REPLACE FUNCTION f_i_corrida()
         END
     $trigger$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS t_i_corrida ON admin_resumo_de_corridas_view;
 CREATE TRIGGER t_i_corrida INSTEAD OF
     INSERT ON admin_criacao_de_corrida_view
     FOR EACH ROW
@@ -105,6 +106,7 @@ CREATE OR REPLACE FUNCTION alocar_corrida()
         END
     $trigger$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS t_i_alocacao_de_corrida_view ON admin_alocacao_de_corrida_view;
 CREATE TRIGGER t_i_alocacao_de_corrida_view
     INSTEAD OF INSERT ON admin_alocacao_de_corrida_view
     FOR EACH ROW
@@ -154,6 +156,7 @@ CREATE OR REPLACE FUNCTION f_ao_agendar()
         END
     $trigger$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS t_ao_agendar ON admin_criacao_de_agendamento_view;
 CREATE TRIGGER t_ao_agendar
     INSTEAD OF INSERT ON admin_criacao_de_agendamento_view
     FOR EACH ROW
@@ -214,7 +217,8 @@ CREATE OR REPLACE FUNCTION f_ao_inserir_ou_atualizar_em_admin_resumo_de_corridas
         END
     $trig$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trig_ao_inserir_ou_atualizar_em_admin_resumo_de_corridas_view
+DROP TRIGGER IF EXISTS t_ao_inserir_ou_atualizar_em_admin_resumo_de_corridas_view ON admin_resumo_de_corridas_view;
+CREATE TRIGGER t_ao_inserir_ou_atualizar_em_admin_resumo_de_corridas_view
     INSTEAD OF UPDATE ON admin_resumo_de_corridas_view
     FOR EACH ROW
     EXECUTE FUNCTION f_ao_inserir_ou_atualizar_em_admin_resumo_de_corridas_view();
@@ -366,7 +370,8 @@ BEGIN
 END
 $func$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER t_i_veiculo INSTEAD OF INSERT ON veiculo_view
+DROP TRIGGER IF EXISTS t_i_veiculo ON veiculo_view;
+CREATE TRIGGER t_i_veiculo INSTEAD OF INSERT ON veiculo_view
     FOR EACH ROW EXECUTE PROCEDURE f_i_veiculo();
 
 CREATE OR REPLACE FUNCTION f_u_veiculo()
@@ -384,7 +389,8 @@ BEGIN
 END
 $func$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER t_u_veiculo INSTEAD OF UPDATE ON veiculo_view
+DROP TRIGGER IF EXISTS t_u_veiculo ON veiculo_view;
+CREATE TRIGGER t_u_veiculo INSTEAD OF UPDATE ON veiculo_view
     FOR EACH ROW EXECUTE PROCEDURE f_u_veiculo();
 
 
@@ -399,7 +405,8 @@ BEGIN
 END
 $func$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER t_d_veiculo INSTEAD OF DELETE ON veiculo_view
+DROP TRIGGER IF EXISTS t_d_veiculo ON veiculo_view;
+CREATE TRIGGER t_d_veiculo INSTEAD OF DELETE ON veiculo_view
     FOR EACH ROW EXECUTE PROCEDURE f_d_veiculo();
 
 /* Fim Artefatos Samuel */
