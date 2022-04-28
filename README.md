@@ -22,7 +22,7 @@ O projeto consiste no desenvolvimento de um sistema digital para uma companhia d
     
     > git clone https://github,com/gsvboas/taxon && cd taxon
 
-2. Crie uma package do sistema. É de extrema importância que isto seja feito *ANTES* de levantar o container, pois o container criará um volume associado à essa package.
+2. Crie uma package do sistema. É de extrema importância que isto seja feito <strong>ANTES</strong> de levantar o container, pois o container criará um volume associado à essa package.
     > mvn package
 3. Suba os containers web e pg.
     > docker-compose up
