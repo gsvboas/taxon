@@ -1,6 +1,8 @@
 package br.ufscar.dc.pibd.controller.admin.corridas;
 
+import br.ufscar.dc.pibd.dao.admin.corridas.DetalhamentoCorridaDAO;
 import br.ufscar.dc.pibd.dao.admin.corridas.ResumoCorridaDAO;
+import br.ufscar.dc.pibd.domain.admin.corridas.DetalhamentoCorrida;
 import br.ufscar.dc.pibd.domain.admin.corridas.ResumoCorrida;
 
 import javax.servlet.RequestDispatcher;
@@ -44,6 +46,11 @@ public class CorridasController extends HttpServlet {
 
     private void doGetDetalhamento(String corridaID, HttpServletRequest req, HttpServletResponse resp)
     throws ServletException, IOException {
-        resp.getWriter().println(corridaID);
+        DetalhamentoCorridaDAO dao = new DetalhamentoCorridaDAO();
+        DetalhamentoCorrida detalhamentoCorrida = dao.getDetalhamentoDeCorridaByCorridaId(Integer.parseInt(corridaID));
+        req.setAttribute("corrida", detalhamentoCorrida);
+
+        RequestDispatcher rd = req.getRequestDispatcher("corridas/detalhamento.jsp");
+        rd.include(req, resp);
     }
 }

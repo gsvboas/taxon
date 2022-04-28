@@ -22,7 +22,6 @@ CREATE OR REPLACE FUNCTION mesma_empresa(agendamento integer, fatura integer)
         DECLARE
             agendamento_cnpj char(14);
             fatura_cnpj char(14);
-            result boolean;
         BEGIN
             SELECT a.cnpj into agendamento_cnpj FROM agendamento AS a WHERE a.id = agendamento;
             SELECT f.cnpj into fatura_cnpj FROM fatura AS f WHERE f.id = fatura;

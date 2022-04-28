@@ -11,5 +11,15 @@ public class ResumoAgendamento {
         this.corridaId = corridaId;
     }
 
+    public String getCnpj() {
+        return cnpj;
+    }
 
+    public int getCorridaId() {
+        return corridaId;
+    }
+
+    public String getNomeConveniada() {
+        return nomeConveniada;
+    }
 }

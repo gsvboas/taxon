@@ -33,7 +33,7 @@
                 <c:out value="${agendamento.nomeConveniada}"/>
             </td>
             <td>
-                <a href='/admin/corridas?id=<c:out value="${agendamento.corridaId}"/>'>
+                <a href='corridas?id=<c:out value="${agendamento.corridaId}"/>'>
                     Ver corrida
                 </a>
             </td>
