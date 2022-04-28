@@ -1,4 +1,28 @@
 /* Começo Artefatos Gabriele */
+CREATE OR REPLACE VIEW admin_detalhamento_de_corrida_view AS
+    SELECT
+        c.id as id,
+        p.nome as motorista_nome,
+        c.cpf as motorista_cpf,
+        v.marca as veiculo_marca,
+        v.modelo as veiculo_modelo,
+        v.cor as veiculo_cor,
+        v.placa as veiculo_placa,
+        c.inicia_em as inicia_em,
+        c.termina_em as termina_em,
+        c.inicia_as as inicia_as,
+        c.termina_as as termina_as,
+        c.valor as valor_total
+
+    FROM
+        corrida as c
+    JOIN
+        fisica as f ON f.cpf = c.cpf
+    JOIN
+        pessoa as p ON p.id = f.id
+    JOIN
+        veiculo as v ON c.chassi = v.chassi;
+
 CREATE OR REPLACE FUNCTION recupera_fatura_de_agendamento(agendamento_id integer)
     RETURNS integer AS $fatura_id$
         DECLARE
