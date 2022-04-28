@@ -1,4 +1,4 @@
-package br.ufscar.dc.pibd.domain.admin;
+package br.ufscar.dc.pibd.domain.admin.corridas;
 
 
 import java.util.Date;

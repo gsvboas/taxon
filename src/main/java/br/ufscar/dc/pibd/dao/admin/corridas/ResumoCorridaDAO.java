@@ -1,4 +1,4 @@
-package br.ufscar.dc.pibd.dao.admin;
+package br.ufscar.dc.pibd.dao.admin.corridas;
 
 import br.ufscar.dc.pibd.dao.GenericDAO;
 import br.ufscar.dc.pibd.domain.admin.corridas.ResumoCorrida;

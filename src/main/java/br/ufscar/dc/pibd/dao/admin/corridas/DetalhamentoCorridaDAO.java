@@ -1,4 +1,4 @@
-package br.ufscar.dc.pibd.dao.admin;
+package br.ufscar.dc.pibd.dao.admin.corridas;
 
 public class DetalhamentoCorridaDAO {
 }

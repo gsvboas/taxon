@@ -1,7 +1,7 @@
 package br.ufscar.dc.pibd.controller.admin.corridas;
 
-import br.ufscar.dc.pibd.dao.admin.ResumoCorridaDAO;
-import br.ufscar.dc.pibd.domain.admin.ResumoCorrida;
+import br.ufscar.dc.pibd.dao.admin.corridas.ResumoCorridaDAO;
+import br.ufscar.dc.pibd.domain.admin.corridas.ResumoCorrida;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
