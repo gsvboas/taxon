@@ -18,13 +18,13 @@
         <table style="width:20%">
             <tr style="width:100%">
                 <td>
-                    <input type="text" placeholder="CNPJ solicitante"/>
+                    <input type="text" placeholder="CNPJ solicitante" name="cnpj"/>
                 </td>
                 <td>
-                    <input type="date" placeholder="Data"/>
+                    <input type="date" placeholder="Data" name="data"/>
                 </td>
                 <td>
-                    <input type="time" placeholder="Horário"/>
+                    <input type="time" placeholder="Horário" name="hora"/>
                 </td>
             </tr>
             <tr style="width:100%">

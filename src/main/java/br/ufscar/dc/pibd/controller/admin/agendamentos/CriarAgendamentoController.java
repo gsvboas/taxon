@@ -1,5 +1,6 @@
 package br.ufscar.dc.pibd.controller.admin.agendamentos;
 
+import br.ufscar.dc.pibd.dao.admin.agendamentos.AgendamentoDAO;
 import br.ufscar.dc.pibd.domain.admin.agendamentos.AgendamentoForm;
 
 import javax.servlet.RequestDispatcher;
@@ -24,6 +25,8 @@ public class CriarAgendamentoController extends HttpServlet {
         String data = req.getParameter("data");
         String hora = req.getParameter("hora");
         AgendamentoForm agendamento = new AgendamentoForm(cnpj, data, hora);
+        AgendamentoDAO dao = new AgendamentoDAO();
+        dao.criarAgendamento(agendamento);
 
         resp.sendRedirect("../agendamentos");
     }
