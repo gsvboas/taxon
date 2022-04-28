@@ -18,6 +18,7 @@ public class AgendamentosController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AgendamentoDAO dao = new AgendamentoDAO();
         List<ResumoAgendamento> listagemAgendamentos = dao.getAllResumosDeAgendamento();
+        req.setAttribute("agendamentos", listagemAgendamentos);
 
         RequestDispatcher rd = req.getRequestDispatcher("agendamentos/index.jsp");
         rd.include(req, resp);

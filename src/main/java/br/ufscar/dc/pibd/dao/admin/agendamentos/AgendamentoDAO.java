@@ -38,8 +38,8 @@ public class AgendamentoDAO extends GenericDAO {
             while(rs.next()){
                 String cnpj = rs.getString("cnpj");
                 String nomeConveniada = rs.getString("nome_conveniada");
-                String[] datahora = rs.getString("inicia_as").split(" ");
-                ResumoAgendamento resumoAgendamento = new ResumoAgendamento(cnpj, nomeConveniada, datahora[0], datahora[1]);
+                int corridaId = rs.getInt("corrida_id");
+                ResumoAgendamento resumoAgendamento = new ResumoAgendamento(cnpj, nomeConveniada, corridaId);
                 listagemAgendamentos.add(resumoAgendamento);
             }
 

@@ -2,7 +2,7 @@
 CREATE OR REPLACE VIEW admin_resumo_de_agendamento_view AS
     SELECT
         a.cnpj AS cnpj,
-        c.inicia_as AS corrida_as,
+        c.id AS corrida_id,
         p.nome AS nome_conveniada
     FROM
         agendamento AS a

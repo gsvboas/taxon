@@ -23,5 +23,24 @@
     </nav>
 </header>
 
+<table>
+    <c:forEach var="agendamento" items="${agendamentos}">
+        <tr>
+            <td>
+                <c:out value="${agendamento.cnpj}"/>
+            </td>
+            <td>
+                <c:out value="${agendamento.nomeConveniada}"/>
+            </td>
+            <td>
+                <a href='/admin/corridas?id=<c:out value="${agendamento.corridaId}"/>'>
+                    Ver corrida
+                </a>
+            </td>
+        </tr>
+    </c:forEach>
+</table>
+
+
 </body>
 </html>

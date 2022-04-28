@@ -3,14 +3,12 @@ package br.ufscar.dc.pibd.domain.admin.agendamentos;
 public class ResumoAgendamento {
     String cnpj;
     String nomeConveniada;
-    String data;
-    String hora;
+    int corridaId;
 
-    public ResumoAgendamento(String cnpj, String nomeConveniada, String data, String hora){
+    public ResumoAgendamento(String cnpj, String nomeConveniada, int corridaId){
         this.cnpj = cnpj;
         this.nomeConveniada = nomeConveniada;
-        this.data = data;
-        this.hora = hora;
+        this.corridaId = corridaId;
     }
 
 
