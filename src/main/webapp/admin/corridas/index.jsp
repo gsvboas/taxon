@@ -42,13 +42,6 @@
                 <td><a href='?id=<c:out value="${corrida.id.toString()}"/>'>Detalhes</a></td>
             </tr>
         </c:forEach>
-        <tr>
-            <td>
-                <form method="GET">
-                    <a href="corridas/criar">Nova Corrida</a>
-                </form>
-            </td>
-        </tr>
     </table>
 </body>
 </html>
