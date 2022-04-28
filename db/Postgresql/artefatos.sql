@@ -1,4 +1,18 @@
 /* Começo Artefatos Gabriele */
+CREATE OR REPLACE VIEW admin_resumo_de_agendamento_view AS
+    SELECT
+        a.cnpj AS cnpj,
+        c.inicia_as AS corrida_as,
+        p.nome AS nome_conveniada
+    FROM
+        agendamento AS a
+    JOIN
+        corrida AS c ON a.id = c.agendamento_id
+    JOIN
+        juridica j on a.cnpj = j.cnpj
+    JOIN
+        pessoa p on j.id = p.id;
+
 CREATE OR REPLACE VIEW admin_resumo_de_corridas_view AS
     SELECT
         c.id AS id,
