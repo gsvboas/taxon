@@ -34,6 +34,10 @@ VALUES
     ('12345678901234567', 'branco', 'AAA0000', '2022', 'Corolla', '5', 'Toyota')
 ON CONFLICT DO NOTHING;
 
+INSERT INTO garagem VALUES (
+    '12345678901234567', '01234567', 105, 12
+) ON CONFLICT DO NOTHING ;
+
 INSERT INTO
     motoristaacessaveiculo(cpf, chassi)
 VALUES
@@ -170,4 +174,6 @@ VALUES
         2
     )
 ON CONFLICT DO NOTHING;
+
+UPDATE corrida SET termina_as = '05-05-2022 14:23:00.00000' WHERE id = 1;
 
