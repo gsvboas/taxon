@@ -1,4 +1,140 @@
 /* Começo Artefatos Gabriele */
+CREATE OR REPLACE FUNCTION recupera_fatura_de_agendamento(agendamento_id integer)
+    RETURNS integer AS $fatura_id$
+        DECLARE
+            id integer;
+        BEGIN
+            SELECT
+                   f.id INTO id
+            FROM
+                 fatura as f
+            JOIN
+                agendamento as a ON f.cnpj = a.cnpj
+            WHERE a.id = agendamento_id
+            AND EXTRACT(MONTH from a.efetuado_as) = EXTRACT(MONTH from f.data_criacao);
+            RETURN id;
+        END
+    $fatura_id$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE VIEW admin_criacao_de_corrida_view AS
+    SELECT
+        c.cpf AS motorista_cpf,
+        c.chassi AS veiculo_chassi,
+        c.inicia_as AS data_inicio,
+        c.agendamento_id AS agendamento_id,
+        c.fatura_id AS fatura_id
+    FROM
+         corrida AS c;
+
+CREATE OR REPLACE FUNCTION f_i_corrida()
+    RETURNS trigger AS $trigger$
+        DECLARE
+            fatura_id integer;
+        BEGIN
+            fatura_id = recupera_fatura_de_agendamento(NEW.agendamento_id);
+            INSERT INTO corrida(
+                cpf,
+                chassi,
+                inicia_as,
+                agendamento_id,
+                fatura_id
+            ) VALUES (
+                NEW.motorista_cpf,
+                NEW.veiculo_chassi,
+                NEW.data_inicio,
+                NEW.agendamento_id,
+                fatura_id
+            );
+            RETURN NULL;
+        END
+    $trigger$ LANGUAGE plpgsql;
+
+CREATE TRIGGER t_i_corrida INSTEAD OF
+    INSERT ON admin_criacao_de_corrida_view
+    FOR EACH ROW
+    EXECUTE FUNCTION f_i_corrida();
+
+CREATE OR REPLACE VIEW admin_alocacao_de_corrida_view AS
+SELECT
+    c.id as agendamento_id,
+    c.inicia_as as inicia_as,
+    c.cpf as motorista_cpf,
+    c.chassi as veiculo_chassi
+FROM
+    corrida AS c;
+
+CREATE OR REPLACE FUNCTION alocar_corrida()
+    RETURNS trigger AS $trigger$
+        BEGIN
+            INSERT INTO admin_criacao_de_corrida_view(
+                motorista_cpf,
+                veiculo_chassi,
+                data_inicio,
+                agendamento_id
+            ) VALUES (
+                NEW.motorista_cpf,
+                NEW.veiculo_chassi,
+                NEW.inicia_as,
+                NEW.agendamento_id
+            );
+            RETURN NULL;
+        END
+    $trigger$ LANGUAGE plpgsql;
+
+CREATE TRIGGER t_i_alocacao_de_corrida_view
+    INSTEAD OF INSERT ON admin_alocacao_de_corrida_view
+    FOR EACH ROW
+    EXECUTE FUNCTION alocar_corrida();
+
+CREATE OR REPLACE VIEW admin_criacao_de_agendamento_view AS
+    SELECT
+        a.cnpj as cnpj,
+        a.efetuado_as as efetuado_as,
+        c.inicia_as as inicia_as
+    FROM agendamento AS a
+    JOIN corrida AS c ON c.agendamento_id = a.id;
+
+CREATE OR REPLACE VIEW admin_motoristas_habilitados_corrida AS
+    SELECT
+        mh.cpf as cpf,
+        mh.chassi as chassi,
+        c.inicia_as as horario_corrida
+    FROM
+        motoristahabilitado as mh
+    JOIN
+        corrida as c ON c.chassi = mh.chassi AND c.cpf = mh.cpf;
+
+CREATE OR REPLACE FUNCTION f_ao_agendar()
+    RETURNS trigger AS $trigger$
+        DECLARE
+            agendamento_id integer;
+            motorista_cpf CHAR(11);
+            veiculo_chassi CHAR(17);
+        BEGIN
+            INSERT INTO agendamento (cnpj, efetuado_as) VALUES (NEW.cnpj, NEW.efetuado_as);
+            SELECT id INTO agendamento_id FROM agendamento WHERE cnpj = NEW.cnpj AND efetuado_as = NEW.efetuado_as;
+            SELECT
+                cpf, chassi INTO motorista_cpf, veiculo_chassi
+            FROM admin_motoristas_habilitados_corrida
+            ORDER BY random() LIMIT 1;
+
+
+            INSERT INTO admin_alocacao_de_corrida_view(
+                agendamento_id, inicia_as,
+                motorista_cpf, veiculo_chassi
+            ) VALUES (
+                agendamento_id, NEW.inicia_as,
+                motorista_cpf, veiculo_chassi
+            );
+            RETURN NULL;
+        END
+    $trigger$ LANGUAGE plpgsql;
+
+CREATE TRIGGER t_ao_agendar
+    INSTEAD OF INSERT ON admin_criacao_de_agendamento_view
+    FOR EACH ROW
+    EXECUTE FUNCTION f_ao_agendar();
+
 CREATE OR REPLACE VIEW admin_resumo_de_agendamento_view AS
     SELECT
         a.cnpj AS cnpj,
@@ -36,7 +172,6 @@ CREATE OR REPLACE FUNCTION mesma_empresa(agendamento integer, fatura integer)
         DECLARE
             agendamento_cnpj char(14);
             fatura_cnpj char(14);
-            result boolean;
         BEGIN
             SELECT a.cnpj into agendamento_cnpj FROM agendamento AS a WHERE a.id = agendamento;
             SELECT f.cnpj into fatura_cnpj FROM fatura AS f WHERE f.id = fatura;
