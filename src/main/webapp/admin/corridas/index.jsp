@@ -19,7 +19,7 @@
         <c:if test="${param.conv != null}">
             <tr>
                 <td colspan="7">
-                    <a href="" align="center">Ver todas</a>
+                    <a href="corridas" align="center">Ver todas</a>
                 </td>
             </tr>
         </c:if>

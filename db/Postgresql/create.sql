@@ -174,7 +174,7 @@ CREATE TABLE TelefonePessoa(
 );
 CREATE TABLE MotoristaCNH(
    	cpf VARCHAR(15),
-    num_registro INT,
+    num_registro INT NOT NULL,
     categoria VARCHAR(2) NOT NULL,
     vencimento_em TIMESTAMP NOT NULL,
     emitida_em TIMESTAMP NOT NULL,

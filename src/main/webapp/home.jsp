@@ -37,7 +37,7 @@
                 <c:if test="${sessionScope.usuarioLogado.papel == 'ADMIN' }">
 					<p>Seja bem-vindo(a) ${sessionScope.usuarioLogado.nome}!</p>
                     <a href="">Motoristas</a>
-                    <a href="">Conveniadas</a>
+                    <a href="admin/conveniadas">Conveniadas</a>
                     <a href="admin/agendamentos">Agendamentos</a>
                     <a href="admin/corridas">Corridas</a>
 				</c:if>
