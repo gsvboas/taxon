@@ -14,11 +14,7 @@
 
 	
 		<body>
-      <%
-				String contextPath = request.getContextPath().replace("/", "");
-			%>
-
-      <a href="adicionarPacote.jsp" type="submit" class="botao-adicionarpacote">
+      <a href="${pageContext.request.contextPath}/motoristas/carro" type="submit" class="botao-adicionarpacote">
           Adicionar +
       </a>
             
@@ -32,14 +28,16 @@
 						<th>Placa</th>
 						<th>Modelo</th>
 						<th>Ocupação</th>
+						<th> </th>
 					</tr>
 					<c:if test="${requestScope.veiculos != 'NULL' }">
 						<c:forEach var="veiculo" items="${requestScope.veiculos}">
 								<tr>
-									<td><a href="/motoristas/carros/${veiculo.chassi}">${veiculo.chassi}</a></td>
+									<td><a href="${pageContext.request.contextPath}/motoristas/carro?chassi=${veiculo.chassi}">${veiculo.chassi}</a></td>
 									<td>${veiculo.placa}</td>
 									<td>${veiculo.modelo}</td>
 									<td>${veiculo.maxOcupacao}</td>
+									<td><a href="${pageContext.request.contextPath}/motoristas/deletaCarro?chassi=${veiculo.chassi}">Deletar</a></td>
 								</tr>
 						</c:forEach>
 					</c:if>

@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class CorridaDAO extends GenericDAO {
     public List<Corrida> getAllCorridasByMotoristaMesEAno(String cpfMotorista, Integer ano, Integer mes) {
@@ -31,6 +32,44 @@ public class CorridaDAO extends GenericDAO {
                 Integer id = resultSet.getInt("id_corrida");
                 LocalDate iniciaAs = LocalDate.parse(resultSet.getDate("data_inicio").toString());
                 LocalDate terminaAs = LocalDate.parse(resultSet.getDate("data_fim").toString());
+                Corrida corrida = new Corrida(id, valor, iniciaAs, terminaAs);
+                corridas.add(corrida);
+
+            }
+
+            resultSet.close();
+            statementCorridas.close();
+            conn.close();
+        } catch (SQLException e) {
+
+            throw new RuntimeException(e);
+        }
+        return corridas;
+    }
+
+    public List<Corrida> getAllCorridasPendentesByMotoristaMesEAno(String cpfMotorista, Integer ano, Integer mes) {
+        List<Corrida> corridas = new ArrayList<>();
+        String sql = "SELECT * FROM recupera_corridas_pendentes(?, ?, ?)";
+
+        try {
+            // Conectando no banco e realizando consulta
+
+            Connection conn = this.getConnection();
+            PreparedStatement statementCorridas = conn.prepareStatement(sql);
+            statementCorridas.setString(1, cpfMotorista);
+            statementCorridas.setInt(2, mes);
+            statementCorridas.setInt(3, ano);
+
+            ResultSet resultSet = statementCorridas.executeQuery();
+
+            while (resultSet.next()) {
+
+                Double valor = resultSet.getDouble("valor_total");
+                Integer id = resultSet.getInt("id_corrida");
+                LocalDate iniciaAs = LocalDate.parse(resultSet.getDate("data_inicio").toString());
+                LocalDate terminaAs = null;
+                if (resultSet.getDate("data_fim") != null)
+                  terminaAs = LocalDate.parse(resultSet.getDate("data_fim").toString());
                 Corrida corrida = new Corrida(id, valor, iniciaAs, terminaAs);
                 corridas.add(corrida);
 

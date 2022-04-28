@@ -1,18 +1,4 @@
 /* Começo Artefatos Gabriele */
-CREATE OR REPLACE VIEW admin_resumo_de_agendamento_view AS
-    SELECT
-        a.cnpj AS cnpj,
-        c.id AS corrida_id,
-        p.nome AS nome_conveniada
-    FROM
-        agendamento AS a
-    JOIN
-        corrida AS c ON a.id = c.agendamento_id
-    JOIN
-        juridica j on a.cnpj = j.cnpj
-    JOIN
-        pessoa p on j.id = p.id;
-
 CREATE OR REPLACE VIEW admin_resumo_de_corridas_view AS
     SELECT
         c.id AS id,
@@ -161,12 +147,12 @@ SELECT
     g.cep as garagem_cep,
     g.num as garagem_num,
     g.num_vaga as garagem_num_vaga,
-    p.id as proprietario_id
+    m.cpf as motorista_cpf
 FROM
-    veiculo v, garagem g, proprietariopossuiveiculo p
-WHERE v.chassi = g.chassi AND p.chassi = v.chassi;
+    veiculo v, garagem g, motoristaacessaveiculo m
+WHERE v.chassi = g.chassi AND m.chassi = v.chassi;
 
-CREATE OR REPLACE FUNCTION recupera_veiculos(propietarioId int)
+CREATE OR REPLACE FUNCTION recupera_veiculos(motoristaCpf text)
     RETURNS TABLE (
                       chassi VARCHAR(17),
                       cor VARCHAR(255),
@@ -178,13 +164,13 @@ CREATE OR REPLACE FUNCTION recupera_veiculos(propietarioId int)
                       garagem_cep CHAR(8),
                       garagem_num INT,
                       garagem_num_vaga INT,
-                      proprietario_id INT
+                      motorista_cpf CHAR(11)
                   )
     LANGUAGE plpgsql AS
 $func$
 BEGIN
     RETURN QUERY
-        select * from veiculo_view where veiculo_view.proprietario_id = propietarioId;
+        select * from veiculo_view where veiculo_view.motorista_cpf = motoristaCpf;
 END
 $func$;
 
@@ -193,16 +179,22 @@ CREATE OR REPLACE FUNCTION f_i_veiculo()
 $func$
 BEGIN
     INSERT INTO veiculo(chassi, cor, placa, ano, modelo, marca, max_ocupacao)
-    VALUES(NEW.chassi, NEW.cor, NEW.placa, NEW.ano, NEW.modelo, NEW.marca, NEW.max_ocupacao);
+    	VALUES(NEW.chassi, NEW.cor, NEW.placa, NEW.ano, NEW.modelo, NEW.marca, NEW.max_ocupacao)
+        ON CONFLICT (chassi) DO UPDATE
+        	SET cor = NEW.cor, placa = NEW.placa, ano = NEW.ano, modelo = NEW.modelo,
+				marca = NEW.marca, max_ocupacao = NEW.max_ocupacao;
     INSERT INTO garagem(chassi, cep, num, num_vaga)
-    VALUES(NEW.chassi, NEW.garagem_cep, NEW.garagem_num, NEW.garagem_num_vaga);
-    INSERT INTO proprietariopossuiveiculo(id, chassi)
-    VALUES(NEW.proprietario_id, NEW.chassi);
+    	VALUES(NEW.chassi, NEW.garagem_cep, NEW.garagem_num, NEW.garagem_num_vaga)
+        ON CONFLICT (chassi, cep, num) DO UPDATE
+        	SET num_vaga = NEW.garagem_num_vaga;
+    INSERT INTO motoristaacessaveiculo(cpf, chassi)
+    	VALUES(NEW.motorista_cpf, NEW.chassi)
+        ON CONFLICT (cpf, chassi) DO NOTHING;
     RETURN NULL;
 END
 $func$ LANGUAGE plpgsql;
 
-CREATE TRIGGER t_i_veiculo INSTEAD OF INSERT ON veiculo_view
+CREATE OR REPLACE TRIGGER t_i_veiculo INSTEAD OF INSERT ON veiculo_view
     FOR EACH ROW EXECUTE PROCEDURE f_i_veiculo();
 
 CREATE OR REPLACE FUNCTION f_u_veiculo()
@@ -214,13 +206,13 @@ BEGIN
         marca = NEW.marca, max_ocupacao = NEW.max_ocupacao
     WHERE veiculo.chassi = NEW.chassi;
     UPDATE garagem
-    SET cep = NEW.garagem_cep, num = NEW.garagem_num, num_vaga = NEW.garagem_num_vaga
+    SET num_vaga = NEW.garagem_num_vaga
     WHERE garagem.chassi = NEW.chassi;
     RETURN NULL;
 END
 $func$ LANGUAGE plpgsql;
 
-CREATE TRIGGER t_u_veiculo INSTEAD OF UPDATE ON veiculo_view
+CREATE OR REPLACE TRIGGER t_u_veiculo INSTEAD OF UPDATE ON veiculo_view
     FOR EACH ROW EXECUTE PROCEDURE f_u_veiculo();
 
 
@@ -229,13 +221,13 @@ CREATE OR REPLACE FUNCTION f_d_veiculo()
 $func$
 BEGIN
     DELETE FROM garagem WHERE garagem.chassi = OLD.chassi;
+    DELETE FROM motoristaacessaveiculo WHERE motoristaacessaveiculo.chassi = OLD.chassi;
     DELETE FROM veiculo WHERE veiculo.chassi = OLD.chassi;
-    DELETE FROM proprietariopossuiveiculo WHERE proprietariopossuiveiculo.chassi = OLD.chassi;
     RETURN NULL;
 END
 $func$ LANGUAGE plpgsql;
 
-CREATE TRIGGER t_d_veiculo INSTEAD OF DELETE ON veiculo_view
+CREATE OR REPLACE TRIGGER t_d_veiculo INSTEAD OF DELETE ON veiculo_view
     FOR EACH ROW EXECUTE PROCEDURE f_d_veiculo();
 
 /* Fim Artefatos Samuel */
